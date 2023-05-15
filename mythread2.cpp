@@ -5,6 +5,17 @@
 MyThread2::MyThread2(QObject *parent)
     : QObject{parent},QRunnable{}
 {
+    setAutoDelete(true);
+}
+MyThread3::MyThread3(QObject *parent)
+    : QObject{parent},QRunnable{}
+{
+
+    setAutoDelete(true);
+}
+MyThread4::MyThread4(QObject *parent)
+    : QObject{parent},QRunnable{}
+{
 
     setAutoDelete(true);
 }
@@ -24,16 +35,16 @@ MyThread6::MyThread6(QObject *parent)
 void MyThread2::run()
 {
     condition_dengdai();
-    qDebug()<<"任务2启动，这是互斥任务";
-//    func_thread1();
-//    emit Tpool_signal2();
+    qDebug()<<"线程1启动，这是a类任务";
+    func_thread1();
+
 }
 
 void MyThread5::run()
 {
     condition_dengdai();
-    qDebug()<<"任务5启动，这是并发任务";
-//    func_thread2();
+    qDebug()<<"线程2启动，这是b类任务";
+    func_thread2();
 
 //    emit Tpool_signal5();
 }
@@ -41,6 +52,21 @@ void MyThread5::run()
 void MyThread6::run()
 {
     condition_dengdai();
-    qDebug()<<"任务6启动，这是并发任务";
-//    func_thread3();
+    qDebug()<<"线程3启动，这是b类任务";
+    func_thread3();
+}
+
+void MyThread3::run()
+{
+    condition_dengdai();
+    qDebug()<<"线程4启动，这是b类任务";
+    func_thread4();
+
+}
+void MyThread4::run()
+{
+    condition_dengdai();
+    qDebug()<<"线程5启动，这是b类任务";
+    func_thread5();
+//    emit Tpool_signal2();
 }

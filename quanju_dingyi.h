@@ -8,7 +8,7 @@
 #include <iostream>
 #include <time.h>
 #include <chrono>
-
+#include <stack>
 #include <list>
 #include <QThread>
 #include <QRandomGenerator>
@@ -16,8 +16,16 @@
 #include <QDateTime>
 #include <QWaitCondition>
 #include <QMutex>
-
+#include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlError>
+#include <QStack>
+#include <QDebug>
+#include <QMessageBox>
 #include "mystack.h"
+#include <random>
+
+
 using namespace std;
 using namespace::chrono;
 
@@ -27,7 +35,7 @@ QMutex mutex1;
 QWaitCondition condition1;
 bool m_enableWork=false;
 
-StringStack stack3(100);
+StringStack stack3(1000);
 
 class zhiling
 {
@@ -36,9 +44,22 @@ public:
     string name;
     int caozuo;//跟栈相关的操作，比如入栈
 
+    zhiling()
+    {
+        ID =0;
+        name ="";
+        caozuo = 0;
+    }
+    ~zhiling()
+    {
+
+    }
 };
 
-const int n = 10;//指令条数,一条指令对应一个任务。
+
+
+const int n = 5000;//指令条数,一条指令对应一个任务。
+const int sleep_time =20;//模拟休眠时间
 zhiling zhiling_duixiang[n];//定义指令数组
 
 vector<double> v_a_time(n);//用于装a命令执行时间的数组（一条命令的执行时间）
@@ -47,13 +68,19 @@ vector<double> v_b2_time(n);//用于装b2命令执行时间的数组（一条命
 vector<string> v_b2_command(n);//用于装b2命令名字的数组（一条命令的名字）
 vector<double> v_b3_time(n);//用于装b3命令执行时间的数组（一条命令的执行时间）
 vector<string> v_b3_command(n);//用于装b3命令名字的数组（一条命令的名字）
+vector<double> v_b4_time(n);//用于装b3命令执行时间的数组（一条命令的执行时间）
+vector<string> v_b4_command(n);//用于装b3命令名字的数组（一条命令的名字）
+vector<double> v_b5_time(n);//用于装b3命令执行时间的数组（一条命令的执行时间）
+vector<string> v_b5_command(n);//用于装b3命令名字的数组（一条命令的名字）
 
 int count_a = 0; //a的计数器thread1
 int count_b2 = 0; //b1的计数器thread2
 int count_b3 = 0; //b2的计数器thread3
+int count_b4 = 0; //b2的计数器thread3
+int count_b5 = 0; //b2的计数器thread3
 
 int y = 0;//用来标识是第几条指令
 
-
+QSqlDatabase db;
 
 #endif // QUANJU_DINGYI_H
